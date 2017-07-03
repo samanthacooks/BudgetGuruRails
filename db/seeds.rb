@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-credit_cards=["American Express","Capital One","Discover","Bank of America","Credit One","JC Penney Credit Card","Kohl's Charge Card","Home Deport","Visa"]
+credit_cards= ["American Express","Capital One","Discover","Bank of America","Credit One","JC Penney Credit Card","Kohl's Charge Card","Home Deport","Visa"]
 loans = ["Sallie Mae","Great Lakes"]
 cable_tv= ["AT&T","Time Warner Cable","CenturyLink","Charter","Verizon","Cox"]
 phone_providers= ["Verizon","AT&T","T-Mobile","Sprint","Cricket"]
@@ -43,8 +43,8 @@ end
   User.sample.incomes.create(
     source:company_names.sample,
     post_tax_amount: rand(0..1000),
-    fixed:false
-    pay_schedule:["monthly","weekly","bi-weekly","yearly"].sample,
+    fixed:false,
+    pay_schedule: ["monthly","weekly","bi-weekly","yearly"].sample
     )
 
   User.sample.budgets.create(
