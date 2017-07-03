@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     resources :password_resets, only: [:new, :create, :edit, :update]
   end
 
-  get '/all' => 'bills#allbills'
-  get '/recent' => 'bills#recent'
+  get '/bills/all' => 'bills#allbills'
+  get '/bills/recent' => 'bills#recent'
 
 
   root 'users#new'
