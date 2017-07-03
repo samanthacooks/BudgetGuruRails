@@ -71,6 +71,9 @@ ActiveRecord::Schema.define(version: 20170703143745) do
     t.string "password_digest", null: false
     t.integer "balance_floor", null: false
     t.integer "remaining_balance"
+    t.string "access_token"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
