@@ -13,7 +13,7 @@ class BudgetsController < ApplicationController
       )
       if @budget.save
         render json: @budget, status: 200
-      else4
+      else
         render json: @budget.errors, status: 422
       end
     end
@@ -23,7 +23,12 @@ class BudgetsController < ApplicationController
     end
 
     def destroy
-
+      budget = Budget.find_by(id:params[:id])
+      if budget.destroy
+        render json: budget, status: 200
+      else
+        render json: budget, status: 422
+      end
     end
 
     private
