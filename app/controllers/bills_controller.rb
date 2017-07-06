@@ -10,7 +10,6 @@ class BillsController < ApplicationController
   end
 
   def create
-    # binding.pry
     @bill = Bill.new(
     bill_name:params["bill_name"],
     amount: params["amount"],
@@ -23,6 +22,12 @@ class BillsController < ApplicationController
     else
       render json: @bill.errors, status: 422
     end
+  end
+
+  def update
+  end
+
+  def destroy
   end
 
   private
