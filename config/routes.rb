@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
 
   get '/bills/all' => 'bills#allbills'
-  get '/bills/recent' => 'bills#recent'
+  post '/bills/new' => 'bills#create'
 
 
   root 'users#new'

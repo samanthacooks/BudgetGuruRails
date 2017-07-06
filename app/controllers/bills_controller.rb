@@ -1,5 +1,4 @@
 class BillsController < ApplicationController
-
   def allbills
     bills = Bill.where(user_id:7)
     render json:bills
@@ -11,13 +10,17 @@ class BillsController < ApplicationController
   end
 
   def create
+    # binding.pry
     @bill = Bill.new(
-    bill_name:params["bill"],
+    bill_name:params["bill_name"],
     amount: params["amount"],
     due_date: params["due_date"],
     status: params["status"],
     user_id: 1
     )
+    if @bill.save
+      render json: @bill, status: 200
+    end
   end
 
   private
