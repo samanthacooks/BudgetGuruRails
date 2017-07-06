@@ -2,10 +2,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:edit, :update]
   before_action :correct_user,   only: [:edit, :update]
-  #respond_to :json, :html
 
-  # GET /users/1
-  # GET /users/1.json
+
   def show
   end
 
@@ -14,65 +12,54 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # GET /users/1/edit
-  def edit
-  end
 
-  # POST /users
+    # POST /users
   def create
     @user = User.new(user_params)
+    # binding.pry
       if @user.save
-        log_in @user
-        flash[:success] = 'Account was successfully created.'
-        redirect_to @user
+        render json: @user.access_token, status: 201
       else
-        render :new
+        render json: @user.errors, status: 422
       end
   end
 
-  # PATCH/PUT /users/1
+ # GET /users/1/edit
+  def edit
+      if @user
+        render json: @user, only: [:email, :name],  status: 200
+      else
+        render text: "Unidentified user", status: 422
+      end
+  end
+
+    # PATCH/PUT /users/1
   def update
     if @user.update_attributes(user_params)
-      flash[:success] = 'Account was successfully updated.'
-      redirect_to @user
+      render text: "Account has been updated successfully", status: 200
     else
-      render :edit
+      render json: @user.errors, status: 422
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
+    # DELETE /users/1
   def destroy
-      if @user.destroy
-        flash[:success] = 'Account was successfully destroyed.'
-        redirect_to root_url
-      end
+    if @user.destroy
+      render text: "Account has been deleted successfuly", status: 200
+    else
+      render text: "Something went wrong", status: 422
+    end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :balance_floor)
-    end
-
-    # Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
+    private
+      # Use callbacks to share common setup or constraints between actions.
+      def set_user
+        @user = User.find_by(access_token: params[:access_token])
       end
-    end
 
-    # Confirms the correct user.
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
-    end
+      # Never trust parameters from the scary internet, only allow the white list through.
+      def user_params
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :balance_floor)
+      end
 
 end
