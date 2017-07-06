@@ -20,6 +20,8 @@ class BillsController < ApplicationController
     )
     if @bill.save
       render json: @bill, status: 200
+    else
+      render json: @bill.errors, status: 422
     end
   end
 
