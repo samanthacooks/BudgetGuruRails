@@ -11,18 +11,25 @@ class BillsController < ApplicationController
   end
 
   def create
-    @bill = Bill.new(
-    bill_name:params["bill"],
-    amount: params["amount"],
-    due_date: params["due_date"],
-    status: params["status"],
-    user_id: 1
-    )
-    if @bill.save
-      flash[:success] = 'Bill was successfully created.'
-    else
-      flash[:error] = "Sorry, Could not create Bill"
-    end
+    # @bill = Bill.new(
+    # bill_name:params["bill"],
+    # amount: params["amount"],
+    # due_date: params["due_date"],
+    # status: params["status"],
+    # user_id: 1
+    # )
+    if headers['Authorization'].present?
+      return headers['Authorization'].split(' ').last
+     else
+       errors.add(:token, 'Missing token')
+     end
+     nil
+   end
+    # if @bill.save
+    #   flash[:success] = 'Bill was successfully created.'
+    # else
+    #   flash[:error] = "Sorry, Could not create Bill"
+    # end
   end
 
   private
