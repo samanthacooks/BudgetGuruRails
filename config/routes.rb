@@ -17,7 +17,19 @@ Rails.application.routes.draw do
   post '/budgets/update' => 'budgets#update'
   delete '/budgets/delete' => 'budgets#destroy'
 
+  get '/accounts/all' => 'accounts#index'
+  post '/accounts/new' => 'accounts#create'
+  post '/accounts/update' => 'accounts#update'
+  delete '/accounts/delete' => 'accounts#destroy'
 
+  resources :accounts do
+    resources :goals, only: [:new, :create]
+  end
+
+  get '/goals/all' => 'goals#index'
+  post '/goals/new' => 'goals#create'
+  post '/goals/update' => 'goals#update'
+  delete '/goals/delete' => 'goals#destroy'
 
   root 'users#new'
 end
