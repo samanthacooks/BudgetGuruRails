@@ -9,7 +9,7 @@ class BudgetsController < ApplicationController
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"],
         goal: params["goal"],
-        user_id: 1
+        user_id: 7
       )
       if @budget.save
         render json: @budget, status: 200
