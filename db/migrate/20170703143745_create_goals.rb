@@ -3,8 +3,8 @@ class CreateGoals < ActiveRecord::Migration[5.1]
     create_table :goals do |t|
       t.string :goal_name, null:false
       t.integer :amount_saved, null:false
-      t.string :timeframe, null:false
-      t.boolean :achieved, null:false, default:false
+      t.datetime :timeframe, null:false
+      t.string :achieved, null:false, default:false
       t.integer :total, null:false
       t.integer :budget_id, foreign_key:true, null:false
 

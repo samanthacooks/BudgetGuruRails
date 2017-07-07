@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   get '/goals/all' => 'goals#index'
   post '/goals/new' => 'goals#create'
   post '/goals/update' => 'goals#update'
-  delete '/goals/delete' => 'goals#destroy'
+  delete '/goals' => 'goals#destroy'
 
   root 'users#new'
 end
