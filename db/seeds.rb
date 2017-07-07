@@ -1,97 +1,97 @@
 hector = User.create(
-first_name:"Hector",
-last_name:"Feurtado",
-email:"HectorFeurtado@gmail.com",
-password:"password",
-balance_floor:1000
+  first_name:"Hector",
+  last_name:"Feurtado",
+  email:"HectorFeurtado@gmail.com",
+  password:"password",
+  balance_floor:1000
 )
 
 hector.bills.create(
   bill_name:"Daycare",
   amount:256,
   due_date:15,
-  status: "false"
+  status: "Paid"
 )
 
 hector.bills.create(
   bill_name:"Spotify",
   amount:15,
   due_date: 12,
-  status: "false"
+  status: "Unpaid"
 )
 
 hector.bills.create(
   bill_name:"Cell Phone",
   amount:92,
   due_date:4,
-  status: "false"
+  status: "Paid"
 )
 
 hector.bills.create(
   bill_name:"Groceries",
   amount:300,
   due_date:20,
-  status: "false"
+  status: "Past Due"
 )
 
 hector.bills.create(
   bill_name:"Capital One Credit card",
   amount:300,
   due_date:4,
-  status: "false"
+  status: "Unpaid"
 )
 hector.bills.create(
   bill_name:"Sallie Mae",
   amount:350,
   due_date:11,
-  status: "false"
+  status: "Paid"
 )
 hector.bills.create(
   bill_name:"Great Lakes Student Loan",
   amount:250,
   due_date:18,
-  status: "false"
+  status: "Unpaid"
 )
 hector.bills.create(
   bill_name:"DBC Loan",
   amount:250,
   due_date:14,
-  status: "false"
+  status: "Paid"
 )
 hector.bills.create(
   bill_name:"Progressive Insurance",
   amount:90,
   due_date:15,
-  status: "false"
+  status: "Unpaid"
 )
 hector.bills.create(
   bill_name:"Rent",
   amount:900,
   due_date:15,
-  status: "false"
+  status: "Unpaid"
 )
 hector.bills.create(
   bill_name:"Light Bill",
   amount:65,
   due_date:8,
-  status: "false"
+  status: "Unpaid"
 )
 hector.bills.create(
   bill_name:"Electricity Bill",
   amount:90,
   due_date:15,
-  status: "false"
+  status: "Unpaid"
 )
 
 
 hector.accounts.create(
-  type:"Checkings Account",
+  account:"Checkings Account",
   balance: 500,
   bank_name:"Peoples Bank"
 )
 
 hector.accounts.create(
-  type:"Checkings Account",
+  account:"Checkings Account",
   balance:300,
   bank_name:"TD Bank"
 )

@@ -1,6 +1,6 @@
 class IncomesController < ApplicationController
   def index
-    incomes = Income.where(user_id:7)
+    incomes = Income.where(user_id:1)
     render json:incomes
   end
 
@@ -11,7 +11,7 @@ class IncomesController < ApplicationController
     post_tax_amount: params["user"]["post_tax_amount"],
     fixed: params["user"]["fixed"],
     pay_schedule: params["user"]["pay_schedule"],
-    user_id: 7
+    user_id: 1
     )
     if income.save
       render json: income, status: 200

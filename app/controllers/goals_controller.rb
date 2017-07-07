@@ -1,6 +1,7 @@
 class GoalsController < ApplicationController
   def index
-    goals = Goal.where(budget_id: 1)
+    user = User.find_by(id:1)
+    goals = user.goals
     render json: goals
   end
 
