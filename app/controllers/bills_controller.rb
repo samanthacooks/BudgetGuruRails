@@ -28,6 +28,8 @@ class BillsController < ApplicationController
   end
 
   def destroy
+    bill = Bill.find_by(id:params[:id]).destroy
+    render json: bill
   end
 
   private

@@ -5,6 +5,7 @@ class BudgetsController < ApplicationController
     end
 
     def create
+      # binding.pry
       @budget = Budget.new(
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"],
