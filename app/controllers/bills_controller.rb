@@ -11,10 +11,10 @@ class BillsController < ApplicationController
 
   def create
     @bill = Bill.new(
-    bill_name:params["bill_name"],
-    amount: params["amount"],
-    due_date: params["due_date"],
-    status: params["status"],
+    bill_name:params["user"]["bill_name"],
+    amount: params["user"]["amount"],
+    due_date: params["user"]["due_date"],
+    status: params["user"]["status"],
     user_id: 7
     )
     if @bill.save

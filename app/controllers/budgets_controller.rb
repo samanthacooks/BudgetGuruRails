@@ -5,11 +5,10 @@ class BudgetsController < ApplicationController
     end
 
     def create
-      # binding.pry
       @budget = Budget.new(
-        budget_name: params["budget_name"],
-        monthly_spend: params["monthly_spend"],
-        goal: params["goal"],
+        budget_name: params["user"]["budget_name"],
+        monthly_spend: params["user"]["monthly_spend"],
+        goal: params["user"]["goal"],
         user_id: 7
       )
       if @budget.save
