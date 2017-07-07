@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get    'verify'  => 'sessions#verify_access_token'
   resources :users, only: [:show, :new, :create, :edit, :update, :destroy]
   resources :password_resets, only: [:new, :create, :edit, :update]
-
+  resources :incomes, only: [:index, :create]
+  delete '/incomes' => 'incomes#destroy'
+  
 
   get '/bills/all' => 'bills#allbills'
   post '/bills/new' => 'bills#create'
