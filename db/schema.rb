@@ -16,9 +16,9 @@ ActiveRecord::Schema.define(version: 20170703143745) do
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "account", null: false
     t.integer "balance", null: false
-    t.string "company_name", null: false
+    t.string "bank_name", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20170703143745) do
   create_table "bills", force: :cascade do |t|
     t.string "bill_name", null: false
     t.integer "amount", null: false
-    t.datetime "due_date", null: false
+    t.integer "due_date", null: false
     t.string "status", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20170703143745) do
   create_table "goals", force: :cascade do |t|
     t.string "goal_name", null: false
     t.integer "amount_saved", null: false
-    t.string "timeframe", null: false
+    t.datetime "timeframe", null: false
     t.boolean "achieved", default: false, null: false
     t.integer "total", null: false
     t.integer "budget_id", null: false
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20170703143745) do
   create_table "incomes", force: :cascade do |t|
     t.string "source", null: false
     t.integer "post_tax_amount", null: false
-    t.boolean "fixed", default: true, null: false
+    t.string "fixed", default: "t", null: false
     t.string "pay_schedule"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 20170703143745) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.integer "balance_floor", null: false
-    t.integer "remaining_balance"
     t.string "access_token"
     t.string "reset_digest"
     t.datetime "reset_sent_at"

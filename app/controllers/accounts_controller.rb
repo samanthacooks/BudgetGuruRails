@@ -1,8 +1,4 @@
 class AccountsController < ApplicationController
-  before_action :set_account, only: [:show, :edit, :update, :destroy]
-  before_action :logged_in_user, only: [:edit, :update]
-  before_action :correct_user, only: [:edit, :update]
-
   def index
     accounts = Account.where(user_id: 1)
     render json:accounts
@@ -16,7 +12,14 @@ class AccountsController < ApplicationController
   # end
 
   def create
-    @account = Account.new(category: params["category"], balance: params["balance"], company_name: params["company_name"], user_id: 1)
+
+    @account = Account.new(
+    account: params["account"],
+    balance: params["balance"],
+    bank_name: params["bank_name"],
+    user_id: 1
+    )
+
     if @account.save
       render json: @account, status 200
     else
@@ -35,6 +38,6 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:accounts).permit(:category,:balance,:company_name,:user_id)
+    params.require(:accounts).permit(:account,:balance,:bank_name,:user_id)
   end
 end
