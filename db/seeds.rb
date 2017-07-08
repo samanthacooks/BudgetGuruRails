@@ -99,14 +99,14 @@ hector.accounts.create(
 hector.incomes.create(
   source:"DBC Company",
   post_tax_amount: 4000,
-  fixed:"true",
+  fixed: true,
   pay_schedule: "monthly"
 )
 
 hector.incomes.create(
   source:"ABC Company",
   post_tax_amount: 1200,
-  fixed:"false",
+  fixed: false,
   pay_schedule: "monthly"
 )
 

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :incomes, only: [:index, :create]
   delete '/incomes' => 'incomes#destroy'
-  
+
 
   get '/bills/all' => 'bills#allbills'
   post '/bills/new' => 'bills#create'
@@ -32,6 +32,9 @@ Rails.application.routes.draw do
   post '/goals/new' => 'goals#create'
   post '/goals/update' => 'goals#update'
   delete '/goals' => 'goals#destroy'
+
+  get '/summary' => 'calculations#summary'
+  get '/expense' => 'calculations#create'
 
   root 'users#new'
 end

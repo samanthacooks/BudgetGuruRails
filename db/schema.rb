@@ -26,9 +26,10 @@ ActiveRecord::Schema.define(version: 20170703143745) do
 
   create_table "bills", force: :cascade do |t|
     t.string "bill_name", null: false
+    t.string "status", null: false
+    t.boolean "recurring", default: true, null: false
     t.integer "amount", null: false
     t.integer "due_date", null: false
-    t.string "status", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -57,7 +58,7 @@ ActiveRecord::Schema.define(version: 20170703143745) do
   create_table "incomes", force: :cascade do |t|
     t.string "source", null: false
     t.integer "post_tax_amount", null: false
-    t.string "fixed", default: "t", null: false
+    t.boolean "fixed", default: true, null: false
     t.string "pay_schedule"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -70,6 +71,8 @@ ActiveRecord::Schema.define(version: 20170703143745) do
     t.string "email", null: false
     t.string "password_digest", null: false
     t.integer "balance_floor", null: false
+    t.boolean "positive", default: false, null: false
+    t.integer "remaining_balance", default: 0, null: false
     t.string "access_token"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
