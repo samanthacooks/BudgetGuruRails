@@ -1,6 +1,46 @@
 class CalculationsController < ApplicationController
   USER = User.find_by(id:1)
 
+  def convert_number_to_date(due_date)
+    today = Date.today
+    bill_due_date = nil
+
+    if today.day > due_date
+        #this will convert the(hypothetically speaking) day number (15) to "2017-07-15"
+        bill_due_date = (today -(today.day-due_date))
+      elsif today.day < due_date
+        bill_due_date = (today +(due_date-today.day))
+    end
+    bill_due_date
+  end
+
+
+#this method will only show the users bills that have not been paid. And bills that are within a week of the due_date
+  def bills_upcoming
+    today = Date.today
+    bills = Bill.where(user_id:1, status: "not paid")
+    upcoming_bills = []
+
+    bills.each do |bill|
+      if today > convert_number_to_date(bill.due_date)
+        bill.update_attribute(:status, "past due")
+        upcoming_bills << bill
+      end
+      if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 7
+        upcoming_bills << bill
+      end
+    end
+    upcoming_bills
+  end
+
+  def bills_upcoming_total
+    bills_upcoming.reduce(0) {|sum,bill| sum+bill.amount}
+  end
+
+  def bills_upcoming_count
+    bills_upcoming.count
+  end
+
   def total_bills
     USER.bills.where(status:"paid").sum(:amount)
   end
@@ -98,6 +138,10 @@ class CalculationsController < ApplicationController
     USER.budgets.sum(:monthly_spend)
   end
 
+  def can_spend?
+    ((remaining_balance_after_charge_account + total_income_by("weekly")) - bills_upcoming_total)>0
+  end
+
 
   def summary
     deposit_money
@@ -105,9 +149,9 @@ class CalculationsController < ApplicationController
 
     floor = USER.balance_floor
 
-    if USER.positive == true && remaining_balance < floor
-      message = "In the green!, But you're below your desired minimum balance by $#{floor-remaining_balance}"
-    elsif USER.positive == true && remaining_balance > floor
+    if USER.positive == true && !can_spend?
+      message = "You have #{bills_upcoming_count} bills coming up within the next week totaling $#{bills_upcoming_total}. You get paid $#{total_income_by('weekly')} next week from your fixed income. You'll still be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}"
+    elsif USER.positive == true && remaining_balance > floor && can_spend?
       message = "Whoa! Looking Good!"
     elsif USER.positive == false && remaining_balance < floor
       message = "It's time for you to set your priorities straight"
@@ -122,7 +166,10 @@ class CalculationsController < ApplicationController
       year_spend: total_available_spend_for_the_year,
       average_monthly_available_spend: average_monthly_available_spend,
       total_budgets_amount: total_budgets_amount,
-      floor: USER.balance_floor
+      floor: USER.balance_floor,
+      bills_upcoming: bills_upcoming_total,
+      can_spend: can_spend?,
+      weekly:total_income_by("weekly")
     }
 
     render json: summary

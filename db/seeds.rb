@@ -86,7 +86,7 @@ hector.bills.create(
 
 hector.accounts.create(
   account:"Checkings Account",
-  balance: 500,
+  balance: 1300,
   bank_name:"Peoples Bank"
 )
 
@@ -106,8 +106,8 @@ hector.incomes.create(
 hector.incomes.create(
   source:"ABC Company",
   post_tax_amount: 1200,
-  fixed: false,
-  pay_schedule: "monthly"
+  fixed: true,
+  pay_schedule: "weekly"
 )
 
 

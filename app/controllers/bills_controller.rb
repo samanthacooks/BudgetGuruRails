@@ -48,6 +48,14 @@ class BillsController < ApplicationController
   end
 
   def update
+    bill = Bill.find_by(id:params[:id]).update_attributes(
+      bill_name:params[:bill_name],
+      amount: params[:amount].to_i,
+      due_date: params[:due_date].to_date.day,
+      status: params[:status],
+      user_id: 1
+    )
+      render json: bill, status: 200
   end
 
   def destroy
