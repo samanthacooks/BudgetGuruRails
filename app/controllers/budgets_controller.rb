@@ -1,6 +1,6 @@
 class BudgetsController < ApplicationController
     def budgets
-      budgets = Budget.where(user_id:7)
+      budgets = Budget.where(user_id:1)
       render json:budgets
     end
 
@@ -9,7 +9,7 @@ class BudgetsController < ApplicationController
         budget_name: params["user"]["budget_name"],
         monthly_spend: params["user"]["monthly_spend"],
         goal: params["user"]["goal"],
-        user_id: 7
+        user_id: 1
       )
       if @budget.save
         render json: @budget, status: 200
