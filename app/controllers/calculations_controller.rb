@@ -175,7 +175,18 @@ class CalculationsController < ApplicationController
     render json: summary
   end
 
-  def expense
-    USER.update_attribute()
+  def create
+    binding.pry
+    remaining_balance_after_charge_account = (remaining_balance_after_charge_account - params["amount"].to_i)
+    expense = USER.expenses.new(
+    amount:params["amount"].to_i,
+    user_id: 1
+    )
+    if expense.save
+      render json: expense, status: 200
+    else
+      render json: expense.errors, status: 422
+    end
+
   end
 end

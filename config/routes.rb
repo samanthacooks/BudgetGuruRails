@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   delete '/goals' => 'goals#destroy'
 
   get '/summary' => 'calculations#summary'
-  get '/expense' => 'calculations#create'
+  post '/expense' => 'calculations#create'
 
   root 'users#new'
 end

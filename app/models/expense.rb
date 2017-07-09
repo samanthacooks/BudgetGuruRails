@@ -1,4 +1,4 @@
 class Expense < ApplicationRecord
   belongs_to :user
-  validates :expense, numericality:true
+  validates :amount, numericality:true
 end
