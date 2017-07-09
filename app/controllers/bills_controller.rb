@@ -38,7 +38,7 @@ class BillsController < ApplicationController
     amount: params["user"]["amount"],
     due_date: params["user"]["due_date"],
     status: params["user"]["status"],
-    user_id: 7
+    user_id: 1
     )
     if @bill.save
       render json: @bill, status: 200

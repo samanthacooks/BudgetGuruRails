@@ -43,43 +43,43 @@ hector.bills.create(
 hector.bills.create(
   bill_name:"Sallie Mae",
   amount:350,
-  due_date:11,
+  due_date:30,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"Great Lakes Student Loan",
   amount:250,
-  due_date:18,
+  due_date:10,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"DBC Loan",
   amount:250,
-  due_date:14,
+  due_date:1,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"Progressive Insurance",
   amount:90,
-  due_date:15,
+  due_date:24,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"Rent",
   amount:900,
-  due_date:15,
+  due_date:8,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"Light Bill",
   amount:65,
-  due_date:8,
+  due_date:19,
   status: "not paid"
 )
 hector.bills.create(
   bill_name:"Electricity Bill",
   amount:90,
-  due_date:15,
+  due_date:11,
   status: "not paid"
 )
 
