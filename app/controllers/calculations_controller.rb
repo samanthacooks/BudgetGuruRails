@@ -32,6 +32,17 @@ class CalculationsController < ApplicationController
     end
     upcoming_bills
   end
+#
+# # Hector, take a look at this
+#   def bills_due_today
+#     today = Date.today
+#     bills = Bill.where(user_id:1, status: "Due today")
+#     if bills.empty?
+#       return "No bills due today"
+#     else
+#       return bills
+#     end
+#   end
 
   def bills_upcoming_total
     bills_upcoming.reduce(0) {|sum,bill| sum+bill.amount}
@@ -173,7 +184,7 @@ class CalculationsController < ApplicationController
       can_spend: can_spend?,
       weekly:total_income_by("weekly")
     }
-
+    binding.pry
     render json: summary
   end
 
