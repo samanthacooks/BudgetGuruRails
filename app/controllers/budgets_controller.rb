@@ -1,6 +1,13 @@
 class BudgetsController < ApplicationController
     def budgets
+      budgets = Budget.where(user_id:1)
+
+        if budgets.empty?
+          array = 0
+        end
+
       budgets = {
+        array: array,
         status:User.find_by(id:1).positive,
         budgets: Budget.where(user_id:1)
       }

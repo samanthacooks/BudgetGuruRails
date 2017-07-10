@@ -2,6 +2,16 @@ class GoalsController < ApplicationController
   def index
     user = User.find_by(id:1)
     goals = user.goals
+
+      if goals.empty?
+        array = 0
+      end
+
+    goals = {
+      array: array,
+      status:user.positive,
+      goals: Budget.where(user_id:1)
+    }
     render json: goals
   end
 
