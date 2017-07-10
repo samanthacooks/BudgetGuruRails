@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20170709091348) do
   create_table "budgets", force: :cascade do |t|
     t.string "budget_name", null: false
     t.integer "monthly_spend", null: false
-    t.boolean "goal", default: false, null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

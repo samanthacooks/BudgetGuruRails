@@ -29,14 +29,14 @@ class UsersController < ApplicationController
       if @user
         render json: @user, only: [:email, :name],  status: 200
       else
-        render text: "Unidentified user", status: 422
+        render json: "Unidentified user", status: 422
       end
   end
 
     # PATCH/PUT /users/1
   def update
     if @user.update_attributes(user_params)
-      render text: "Account has been updated successfully", status: 200
+      render json: "Account has been updated successfully", status: 200
     else
       render json: @user.errors, status: 422
     end
@@ -45,9 +45,9 @@ class UsersController < ApplicationController
     # DELETE /users/1
   def destroy
     if @user.destroy
-      render text: "Account has been deleted successfuly", status: 200
+      render json: "Account has been deleted successfuly", status: 200
     else
-      render text: "Something went wrong", status: 422
+      render json: "Something went wrong", status: 422
     end
   end
 
