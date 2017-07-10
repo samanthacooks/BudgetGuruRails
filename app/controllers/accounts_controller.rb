@@ -14,16 +14,16 @@ class AccountsController < ApplicationController
   def create
 
     @account = Account.new(
-    account: params["account"],
-    balance: params["balance"],
-    bank_name: params["bank_name"],
-    user_id: 1
-    )
+      account: params["account"],
+      balance: params["balance"],
+      bank_name: params["bank_name"],
+      user_id: 1)
 
     if @account.save
-      render json: @account, status 200
+      render json: @account, status: 200
     else
-      render json: @account.errors, status 422
+      render json: @account.errors, status: 422
+    end
   end
 
   def edit
