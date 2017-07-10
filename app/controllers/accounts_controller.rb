@@ -17,8 +17,7 @@ class AccountsController < ApplicationController
       account: params["account"],
       balance: params["balance"],
       bank_name: params["bank_name"],
-      user_id: 1
-    )
+      user_id: 1)
 
     if @account.save
       render json: @account, status 200
