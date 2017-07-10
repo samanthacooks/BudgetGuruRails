@@ -188,7 +188,7 @@ class CalculationsController < ApplicationController
       can_spend: can_spend?,
       weekly:total_income_by("weekly")
     }
-    binding.pry
+
     render json: summary
   end
 
