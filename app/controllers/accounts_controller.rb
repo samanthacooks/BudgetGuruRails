@@ -20,9 +20,9 @@ class AccountsController < ApplicationController
       user_id: 1)
 
     if @account.save
-      render json: @account, status 200
+      render json: @account, status: 200
     else
-      render json: @account.errors, status 422
+      render json: @account.errors, status: 422
     end
   end
 
