@@ -17,7 +17,7 @@ class BillsController < ApplicationController
 #this method will only show the users bills that have not been paid. And bills that are within a week of the due_date
   def allbills
     today = Date.today
-    bills = Bill.where(user_id:1, status: "not paid")
+    bills = Bill.where(user_id:1)
     upcoming_bills = []
 
     bills.each do |bill|
@@ -25,8 +25,14 @@ class BillsController < ApplicationController
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
       end
-      if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 7
-        upcoming_bills << bill
+      if bill.due_date > today.day
+        if today < convert_number_to_date(bill.due_date) && (bill.due_date - today.day) <= 14
+          upcoming_bills << bill
+        end
+      elsif bill.due_date < today.day
+        if today < convert_number_to_date(bill.due_date) && (today.day - bill.due_date) <= 14
+          upcoming_bills << bill
+        end
       end
     end
     render json: upcoming_bills
