@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   delete '/incomes' => 'incomes#destroy'
 
 
-  get '/bills/all' => 'bills#allbills'
+  get '/bills' => 'bills#allbills'
   post '/bills/new' => 'bills#create'
   post '/bills/update' => 'bills#update'
   delete '/bills' => 'bills#destroy'
@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   post '/budgets/update' => 'budgets#update'
   delete '/budgets' => 'budgets#destroy'
 
-  get '/accounts/all' => 'accounts#index'
+  get '/accounts' => 'accounts#index'
   post '/accounts/new' => 'accounts#create'
   post '/accounts/update' => 'accounts#update'
   delete '/accounts/delete' => 'accounts#destroy'
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     resources :goals, only: [:new, :create]
   end
 
-  get '/goals/all' => 'goals#index'
+  get '/goals' => 'goals#index'
   post '/goals/new' => 'goals#create'
   post '/goals/update' => 'goals#update'
   delete '/goals' => 'goals#destroy'

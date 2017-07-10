@@ -110,31 +110,29 @@ hector.incomes.create(
   pay_schedule: "weekly"
 )
 
-
-budget1 = hector.budgets.create(
-  budget_name:"Technology",
-  monthly_spend: 0,
-  goal:false
-  )
-
-budget2 = hector.budgets.create(
-  budget_name:"Traveling",
-  monthly_spend: rand(10..1000),
-  goal:false
-)
-
-budget1.goals.create(
-  goal_name: "Yamaha Motif",
-  amount_saved:20,
-  timeframe: rand(Date.today..((Date.today)+(365))),
-  achieved:false,
-  total: 3500
-)
-
-budget2.goals.create(
-  goal_name: "Bora Bora",
-  amount_saved:300,
-  timeframe: rand(Date.today..((Date.today)+(365))),
-  achieved:false,
-  total: 3500
-)
+#
+# budget1 = hector.budgets.create(
+#   budget_name:"Technology",
+#   monthly_spend: 0
+#   )
+#
+# budget2 = hector.budgets.create(
+#   budget_name:"Traveling",
+#   monthly_spend: rand(10..1000),
+# )
+#
+# budget1.goals.create(
+#   goal_name: "Yamaha Motif",
+#   amount_saved:20,
+#   timeframe: rand(Date.today..((Date.today)+(365))),
+#   achieved:false,
+#   total: 3500
+# )
+#
+# budget2.goals.create(
+#   goal_name: "Bora Bora",
+#   amount_saved:300,
+#   timeframe: rand(Date.today..((Date.today)+(365))),
+#   achieved:false,
+#   total: 3500
+# )

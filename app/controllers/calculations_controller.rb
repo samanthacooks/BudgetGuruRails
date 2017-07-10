@@ -5,7 +5,7 @@ class CalculationsController < ApplicationController
     today = Date.today
     bill_due_date = nil
 
-    if today.day > due_date
+    if today.day >= due_date
         #this will convert the(hypothetically speaking) day number (15) to "2017-07-15"
         bill_due_date = (today -(today.day-due_date))
       elsif today.day < due_date
@@ -26,7 +26,7 @@ class CalculationsController < ApplicationController
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
       end
-      if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 7
+      if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 14
         upcoming_bills << bill
       end
     end
@@ -42,11 +42,15 @@ class CalculationsController < ApplicationController
   end
 
   def total_bills
-    USER.bills.where(status:"paid").sum(:amount)
+    USER.bills.sum(:amount)
+  end
+
+  def total_expenses
+    USER.expenses.sum(:amount)
   end
 
   def current_week
-    Date.today.strftime("%U").to_i
+    Date.today.strftime("%U").to_i + 31
   end
 
   def total_income
@@ -62,17 +66,13 @@ class CalculationsController < ApplicationController
   end
 
   def total_expenses_for_the_year
-    recurring_expenses = USER.bills.where(recurring:true).sum(:amount)*months_left
-    one_time_expenses = USER.bills.where(recurring: false).sum(:amount)
-    recurring_expenses + one_time_expenses
+    (total_bills * months_left)+ total_expenses
   end
 
   def remaining_balance
     total_account_balance = USER.accounts.sum(:balance)
-    USER.update_attribute(:remaining_balance, (total_account_balance - total_bills) )
-
-    #always show the user their balance minus the balance_floor
-    USER.remaining_balance - USER.balance_floor
+    USER.update_attribute(:remaining_balance, (total_account_balance - total_bills - total_expenses))
+    USER.remaining_balance
   end
 
   def total_income_by(schedule)
@@ -144,15 +144,17 @@ class CalculationsController < ApplicationController
 
 
   def summary
+    default_messages=["Nice! Now let's go shopping! No really, you can treat yourself to something this week. But remember to use our calculator 😉","What are you getting me? 😁"]
     deposit_money
     message = ""
 
     floor = USER.balance_floor
-
     if USER.positive == true && !can_spend?
       message = "You have #{bills_upcoming_count} bills coming up within the next week totaling $#{bills_upcoming_total}. You get paid $#{total_income_by('weekly')} next week from your fixed income. You'll still be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}"
     elsif USER.positive == true && remaining_balance > floor && can_spend?
-      message = "Whoa! Looking Good!"
+      message = default_messages.sample
+    elsif USER.positive == true && remaining_balance < floor && can_spend?
+      message = "You dont have any upcoming bills within the next week but your account is below your desired minimum by $#{floor-remaining_balance}"
     elsif USER.positive == false && remaining_balance < floor
       message = "It's time for you to set your priorities straight"
     end
@@ -176,7 +178,6 @@ class CalculationsController < ApplicationController
   end
 
   def create
-    binding.pry
     remaining_balance_after_charge_account = (remaining_balance_after_charge_account - params["amount"].to_i)
     expense = USER.expenses.new(
     amount:params["amount"].to_i,
@@ -187,6 +188,6 @@ class CalculationsController < ApplicationController
     else
       render json: expense.errors, status: 422
     end
-
   end
+
 end
