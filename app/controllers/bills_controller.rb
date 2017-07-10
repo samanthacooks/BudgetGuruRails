@@ -19,11 +19,15 @@ class BillsController < ApplicationController
     today = Date.today
     bills = Bill.where(user_id:1, status: "not paid")
     upcoming_bills = []
-
+    due_today = []
     bills.each do |bill|
+      binding.pry
       if today > convert_number_to_date(bill.due_date)
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
+      elsif today == convert_number_to_date(bill.due_date)
+        bill.update_attribute(:status, "Due today")
+        due_today << bill
       end
       if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 7
         upcoming_bills << bill
