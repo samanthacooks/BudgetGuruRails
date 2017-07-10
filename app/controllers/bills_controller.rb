@@ -4,7 +4,7 @@ class BillsController < ApplicationController
     today = Date.today
     bill_due_date = nil
 
-    if today.day > due_date
+    if today.day >= due_date
         #this will convert the(hypothetically speaking) day number (15) to "2017-07-15"
         bill_due_date = (today -(today.day-due_date))
       elsif today.day < due_date

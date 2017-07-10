@@ -1,7 +1,10 @@
 class BudgetsController < ApplicationController
     def budgets
-      budgets = Budget.where(user_id:1)
-      render json:budgets
+      budgets = {
+        status:User.find_by(id:1).positive,
+        budgets: Budget.where(user_id:1)
+      }
+      render json: budgets
     end
 
     def create
@@ -19,7 +22,13 @@ class BudgetsController < ApplicationController
     end
 
     def update
-
+      budget = Budget.find_by(id:params[:id]).update_attributes(
+        budget_name: params["budget_name"],
+        monthly_spend: params["monthly_spend"],
+        goal: params["goal"],
+        user_id: 1
+      )
+        render json: budget, status: 200
     end
 
     def destroy
