@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
   get    'verify'  => 'sessions#verify_access_token'
-  resources :users, only: [:show, :new, :create, :edit, :update, :destroy]
+  post '/update/:token' => 'users#update'
+  get '/users/:token/edit' => 'users#edit'
+  resources :users, only: [:show, :new, :create, :update, :destroy]
   resources :password_resets, only: [:new, :create, :edit, :update]
 
   get '/incomes/:token' => 'incomes#index'
