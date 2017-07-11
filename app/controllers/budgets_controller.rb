@@ -19,8 +19,7 @@ class BudgetsController < ApplicationController
     def create
       @budget = $USER.budgets.new(
         budget_name: params["budget_name"],
-        monthly_spend: params["monthly_spend"],
-        goal: params["goal"]
+        monthly_spend: params["monthly_spend"]
       )
       if @budget.save
         render json: @budget, status: 200
@@ -33,7 +32,6 @@ class BudgetsController < ApplicationController
       budget = Budget.find_by(id:params[:id]).update_attributes(
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"],
-        goal: params["goal"],
         user_id: $USER.id
       )
         render json: budget, status: 200

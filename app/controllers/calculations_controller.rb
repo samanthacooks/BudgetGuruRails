@@ -177,7 +177,7 @@ class CalculationsController < ApplicationController
 
     summary = {
       remaining_balance: remaining_balance_after_charge_account,
-      positive?: user_status,
+      positive: user_status,
       message: message,
       total_income: total_income,
       total_expenses: total_expenses_for_the_year,
