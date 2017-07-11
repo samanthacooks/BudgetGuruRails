@@ -30,10 +30,25 @@ class CalculationsController < ApplicationController
     end
     upcoming_bills
   end
+#
+# # Hector, take a look at this
+#   def bills_due_today
+#     today = Date.today
+#     bills = Bill.where(user_id:1, status: "Due today")
+#     if bills.empty?
+#       return nil
+#     else
+#       return bills
+#     end
+#   end
 
   def bills_upcoming_total
     bills_upcoming.reduce(0) {|sum,bill| sum+bill.amount}
   end
+
+  # def bills_due_today_total
+  #   bills_due_today.reduce(0) {|sum,bill| sum + bill.amount} if bills_due_today
+  # end
 
   def bills_upcoming_count
     bills_upcoming.count
