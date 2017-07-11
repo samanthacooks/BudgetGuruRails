@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   post '/goals/update' => 'goals#update'
   delete '/goals' => 'goals#destroy'
 
-  get '/summary/:token' => 'calculations#summary'
+  get '/summary' => 'calculations#summary'
   post '/expense' => 'calculations#create'
 
   root 'users#new'
