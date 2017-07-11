@@ -1,6 +1,6 @@
 class GoalsController < ApplicationController
   def index
-    user = User.find_by(id:1)
+    user = User.find_by(access_token:params[:token])
     goals = user.goals
 
       if goals.empty?
@@ -10,19 +10,19 @@ class GoalsController < ApplicationController
     goals = {
       array: array,
       status:user.positive,
-      goals: Budget.where(user_id:1)
+      goals: user.goals
     }
     render json: goals
   end
 
   def create
-    goal = Goal.new(
-    goal_name: params["user"]["goal_name"],
-    amount_saved: params["user"]["amount_saved"],
-    timeframe: params["user"]["timeframe"],
-    achieved: params["user"]["achieved"],
-    total: params["user"]["total"],
-    budget_id: 1
+    user = User.find_by(access_token:params[:token])
+    goal = user.goals.new(
+      goal_name: params["goal_name"],
+      amount_saved: params["amount_saved"],
+      timeframe: params["timeframe"],
+      achieved: params["achieved"],
+      total: params["total"]
     )
 
     if goal.save

@@ -1,6 +1,4 @@
 class CalculationsController < ApplicationController
-  USER = User.find_by(id:1)
-
   def convert_number_to_date(due_date)
     today = Date.today
     bill_due_date = nil
@@ -18,7 +16,7 @@ class CalculationsController < ApplicationController
 #this method will only show the users bills that have not been paid. And bills that are within a week of the due_date
   def bills_upcoming
     today = Date.today
-    bills = Bill.where(user_id:1, status: "not paid")
+    bills = $USER.bills.where(status: "not paid")
     upcoming_bills = []
 
     bills.each do |bill|
@@ -57,11 +55,11 @@ class CalculationsController < ApplicationController
   end
 
   def total_bills
-    USER.bills.sum(:amount)
+    $USER.bills.sum(:amount)
   end
 
   def total_expenses
-    USER.expenses.sum(:amount)
+    $USER.expenses.sum(:amount)
   end
 
   def current_week
@@ -69,7 +67,7 @@ class CalculationsController < ApplicationController
   end
 
   def total_income
-    USER.incomes.where(fixed: true).sum(:post_tax_amount)*months_left
+    $USER.incomes.where(fixed: true).sum(:post_tax_amount)*months_left
   end
 
   def weeks_left
@@ -85,19 +83,19 @@ class CalculationsController < ApplicationController
   end
 
   def remaining_balance
-    total_account_balance = USER.accounts.sum(:balance)
-    USER.update_attribute(:remaining_balance, (total_account_balance - total_bills - total_expenses))
-    USER.remaining_balance
+    total_account_balance = $USER.accounts.sum(:balance)
+    $USER.update_attribute(:remaining_balance, (total_account_balance - total_bills - total_expenses))
+    $USER.remaining_balance
   end
 
   def total_income_by(schedule)
-    USER.incomes.where(fixed: true , pay_schedule: schedule).sum(:post_tax_amount)
+    $USER.incomes.where(fixed: true , pay_schedule: schedule).sum(:post_tax_amount)
   end
 
   #this method will automatically"withdraw" from the users account the amount for the bill paid
   def remaining_balance_after_charge_account
     balance = remaining_balance
-    bills = USER.bills
+    bills = $USER.bills
 
     bills.each do |bill|
       if bill.status == "paid"
@@ -113,7 +111,7 @@ class CalculationsController < ApplicationController
 
   #this method will automatically "deposit" money for the user. It will update their bank account based on their pay schedule.
   def deposit_money
-    user_accounts = USER.accounts
+    user_accounts = $USER.accounts
 
     user_accounts.each do |account|
     week_of_last_deposit = account.updated_at.strftime("%U").to_i
@@ -132,11 +130,11 @@ class CalculationsController < ApplicationController
 
   def user_status
     if remaining_balance < 0 == false
-      USER.update_attribute(:positive, true)
+      $USER.update_attribute(:positive, true)
     else
-      USER.update_attribute(:positive, false)
+      $USER.update_attribute(:positive, false)
     end
-    return USER.positive
+    return $USER.positive
   end
 
   def average_monthly_available_spend
@@ -150,7 +148,7 @@ class CalculationsController < ApplicationController
   end
 
   def total_budgets_amount
-    USER.budgets.sum(:monthly_spend)
+    $USER.budgets.sum(:monthly_spend)
   end
 
   def can_spend?
@@ -159,18 +157,21 @@ class CalculationsController < ApplicationController
 
 
   def summary
+    # $USER = User.find_by(access_token:params[:token])
+    # binding.pry
+
     default_messages=["Nice! Now let's go shopping! No really, you can treat yourself to something this week. But remember to use our calculator 😉","What are you getting me? 😁"]
     deposit_money
     message = ""
 
-    floor = USER.balance_floor
-    if USER.positive == true && !can_spend?
+    floor = $USER.balance_floor
+    if $USER.positive == true && !can_spend?
       message = "You have #{bills_upcoming_count} bills coming up within the next week totaling $#{bills_upcoming_total}. You get paid $#{total_income_by('weekly')} next week from your fixed income. You'll still be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}"
-    elsif USER.positive == true && remaining_balance > floor && can_spend?
+    elsif $USER.positive == true && remaining_balance > floor && can_spend?
       message = default_messages.sample
-    elsif USER.positive == true && remaining_balance < floor && can_spend?
+    elsif $USER.positive == true && remaining_balance < floor && can_spend?
       message = "You dont have any upcoming bills within the next week but your account is below your desired minimum by $#{floor-remaining_balance}"
-    elsif USER.positive == false && remaining_balance < floor
+    elsif $USER.positive == false && remaining_balance < floor
       message = "It's time for you to set your priorities straight"
     end
 
@@ -183,7 +184,7 @@ class CalculationsController < ApplicationController
       year_spend: total_available_spend_for_the_year,
       average_monthly_available_spend: average_monthly_available_spend,
       total_budgets_amount: total_budgets_amount,
-      floor: USER.balance_floor,
+      floor: $USER.balance_floor,
       bills_upcoming: bills_upcoming_total,
       can_spend: can_spend?,
       weekly:total_income_by("weekly")
@@ -194,9 +195,9 @@ class CalculationsController < ApplicationController
 
   def create
     remaining_balance_after_charge_account = (remaining_balance_after_charge_account - params["amount"].to_i)
-    expense = USER.expenses.new(
+    expense = $USER.expenses.new(
     amount:params["amount"].to_i,
-    user_id: 1
+    user_id: $USER.id
     )
     if expense.save
       render json: expense, status: 200

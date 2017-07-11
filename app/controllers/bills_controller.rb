@@ -16,8 +16,9 @@ class BillsController < ApplicationController
 
 #this method will only show the users bills that have not been paid. And bills that are within a week of the due_date
   def allbills
+    user = User.find_by(access_token:params[:token])
     today = Date.today
-    bills = Bill.where(user_id:1)
+    bills = user.bills
     upcoming_bills = []
     due_today = []
     bills.each do |bill|
@@ -42,12 +43,13 @@ class BillsController < ApplicationController
   end
 
   def create
-    @bill = Bill.new(
-    bill_name:params["user"]["bill_name"],
-    amount: params["user"]["amount"],
-    due_date: params["user"]["due_date"],
-    status: params["user"]["status"],
-    user_id: 1
+    user = User.find_by(access_token:params[:token])
+
+    @bill = user.bills.new(
+    bill_name:params["bill_name"],
+    amount: params["amount"],
+    due_date: params["due_date"],
+    status: params["status"],
     )
     if @bill.save
       render json: @bill, status: 200
@@ -57,12 +59,12 @@ class BillsController < ApplicationController
   end
 
   def update
-    bill = Bill.find_by(id:params[:id]).update_attributes(
+    user = User.find_by(access_token:params[:token])
+    bill = user.bills.find_by(id:params[:id]).update_attributes(
       bill_name:params[:bill_name],
       amount: params[:amount].to_i,
       due_date: params[:due_date].to_date.day,
-      status: params[:status],
-      user_id: 1
+      status: params[:status]
     )
       render json: bill, status: 200
   end
