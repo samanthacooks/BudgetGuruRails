@@ -5,18 +5,20 @@ Rails.application.routes.draw do
   get    'verify'  => 'sessions#verify_access_token'
   resources :users, only: [:show, :new, :create, :edit, :update, :destroy]
   resources :password_resets, only: [:new, :create, :edit, :update]
-  resources :incomes, only: [:index, :create]
+
+  get '/incomes/:token' => 'incomes#index'
+  post '/incomes/:token' => 'incomes#create'
   delete '/incomes' => 'incomes#destroy'
 
 
-  get '/bills' => 'bills#allbills'
-  post '/bills/new' => 'bills#create'
-  post '/bills/update' => 'bills#update'
+  get '/bills/:token' => 'bills#allbills'
+  post '/bills/new/:token' => 'bills#create'
+  post '/bills/update/:token' => 'bills#update'
   delete '/bills' => 'bills#destroy'
 
-  get '/budgets' => 'budgets#budgets'
-  post '/budgets/new' => 'budgets#create'
-  post '/budgets/update' => 'budgets#update'
+  get '/budgets/:token' => 'budgets#budgets'
+  post '/budgets/new/:token' => 'budgets#create'
+  post '/budgets/update/:token' => 'budgets#update'
   delete '/budgets' => 'budgets#destroy'
 
   get '/accounts' => 'accounts#index'
@@ -28,12 +30,12 @@ Rails.application.routes.draw do
     resources :goals, only: [:new, :create]
   end
 
-  get '/goals' => 'goals#index'
-  post '/goals/new' => 'goals#create'
+  get '/goals/:token' => 'goals#index'
+  post '/goals/new/:token' => 'goals#create'
   post '/goals/update' => 'goals#update'
   delete '/goals' => 'goals#destroy'
 
-  get '/summary' => 'calculations#summary'
+  get '/summary/:token' => 'calculations#summary'
   post '/expense' => 'calculations#create'
 
   root 'users#new'

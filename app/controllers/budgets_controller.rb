@@ -1,25 +1,26 @@
 class BudgetsController < ApplicationController
-    def budgets
-      budgets = Budget.where(user_id:1)
+    $USER = "user"
 
-        if budgets.empty?
+    def budgets
+      $USER = User.find_by(access_token: params[:token])
+        if $USER.budgets.empty?
           array = 0
         end
 
       budgets = {
         array: array,
-        status:User.find_by(id:1).positive,
-        budgets: Budget.where(user_id:1)
+        status:$USER.positive,
+        budgets:$USER.budgets
       }
       render json: budgets
     end
 
+
     def create
-      @budget = Budget.new(
-        budget_name: params["user"]["budget_name"],
-        monthly_spend: params["user"]["monthly_spend"],
-        goal: params["user"]["goal"],
-        user_id: 1
+      @budget = $USER.budgets.new(
+        budget_name: params["budget_name"],
+        monthly_spend: params["monthly_spend"],
+        goal: params["goal"]
       )
       if @budget.save
         render json: @budget, status: 200
@@ -33,7 +34,7 @@ class BudgetsController < ApplicationController
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"],
         goal: params["goal"],
-        user_id: 1
+        user_id: $USER.id
       )
         render json: budget, status: 200
     end
@@ -45,12 +46,6 @@ class BudgetsController < ApplicationController
       else
         render json: budget, status: 422
       end
-    end
-
-    private
-
-    def bill_params
-      params.require(:bill).permit(:budget_name, :monthly_spend, :goal, :user_id)
     end
 
 end

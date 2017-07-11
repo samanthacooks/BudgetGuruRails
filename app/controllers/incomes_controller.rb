@@ -1,17 +1,19 @@
 class IncomesController < ApplicationController
   def index
-    incomes = Income.where(user_id:1)
+    user = User.find_by(access_token:params[:token])
+    incomes = user.incomes
     render json:incomes
   end
 
   def create
     # binding.pry
-    income = Income.new(
-    source:params["user"]["source"],
-    post_tax_amount: params["user"]["post_tax_amount"],
-    fixed: params["user"]["fixed"],
-    pay_schedule: params["user"]["pay_schedule"],
-    user_id: 1
+    user = User.find_by(access_token:params[:token])
+
+    income = user.incomes.new(
+      source:params["source"],
+      post_tax_amount: params["post_tax_amount"],
+      fixed: params["fixed"],
+      pay_schedule: params["pay_schedule"]
     )
     if income.save
       render json: income, status: 200
