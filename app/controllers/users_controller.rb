@@ -1,7 +1,16 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :logged_in_user, only: [:edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+
+  def update
+    user = User.find_by(access_token:params[:token]).update_attributes(
+      first_name:params[:first_name],
+      last_name:params[:last_name],
+      email:params[:email],
+      password:params[:password],
+      balance_floor: params[:balance_floor].to_i)
+ # binding.pry
+      render json: user, status: 200
+  end
 
   def show
   end
@@ -26,20 +35,15 @@ class UsersController < ApplicationController
 
  # GET /users/1/edit
   def edit
-      if @user
-        render json: @user, only: [:email, :name],  status: 200
-      else
-        render json: "Unidentified user", status: 422
-      end
-  end
-
-    # PATCH/PUT /users/1
-  def update
-    if @user.update_attributes(user_params)
-      render json: "Account has been updated successfully", status: 200
-    else
-      render json: @user.errors, status: 422
-    end
+    # binding.pry
+    user = User.find_by(access_token:params[:token])
+      user = {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        balance_floor: user.balance_floor.to_s
+      }
+      render json: user,  status: 200
   end
 
     # DELETE /users/1
