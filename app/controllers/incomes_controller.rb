@@ -6,9 +6,7 @@ class IncomesController < ApplicationController
   end
 
   def create
-    # binding.pry
     user = User.find_by(access_token:params[:token])
-
     income = user.incomes.new(
       source:params["source"],
       post_tax_amount: params["post_tax_amount"],
@@ -23,6 +21,14 @@ class IncomesController < ApplicationController
   end
 
   def update
+    user = User.find_by(access_token:params[:token])
+    income = user.incomes.find_by(id:params[:id]).update_attributes(
+      source: params[:source],
+      post_tax_amount: params[:post_tax_amount],
+      fixed: params[:fixed],
+      pay_schedule: params[:pay_schedule]
+    )
+    render json: income, status: 200
   end
 
   def destroy

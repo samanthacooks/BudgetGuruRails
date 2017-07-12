@@ -9,16 +9,16 @@ class AccountsController < ApplicationController
   def create
     user = User.find_by(access_token:params[:token])
 
-    @account = user.accounts.new(
+    account = user.accounts.new(
       account: params["account"],
       balance: params["balance"],
       bank_name: params["bank_name"]
-      )
+    )
 
-    if @account.save
-      render json: @account, status: 200
+    if account.save
+      render json: account, status: 200
     else
-      render json: @account.errors, status: 422
+      render json: account.errors, status: 422
     end
   end
 

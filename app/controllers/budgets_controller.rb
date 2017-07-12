@@ -17,6 +17,7 @@ class BudgetsController < ApplicationController
 
 
     def create
+      binding.pry
       @budget = $USER.budgets.new(
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"]
@@ -38,6 +39,7 @@ class BudgetsController < ApplicationController
     end
 
     def destroy
+      binding.pry
       budget = Budget.find_by(id:params[:id])
       if budget.destroy
         render json: budget, status: 200
