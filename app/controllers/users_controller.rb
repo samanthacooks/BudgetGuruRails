@@ -8,7 +8,6 @@ class UsersController < ApplicationController
       email:params[:email],
       password:params[:password],
       balance_floor: params[:balance_floor].to_i)
- # binding.pry
       render json: user, status: 200
   end
 
@@ -24,7 +23,6 @@ class UsersController < ApplicationController
     # POST /users
   def create
     @user = User.new(user_params)
-    # binding.pry
       if @user.save
         RegistrationMailer.welcome_email(@user).deliver!
         render json: @user.access_token, status: 201
@@ -35,7 +33,6 @@ class UsersController < ApplicationController
 
  # GET /users/1/edit
   def edit
-    # binding.pry
     user = User.find_by(access_token:params[:token])
       user = {
         first_name: user.first_name,

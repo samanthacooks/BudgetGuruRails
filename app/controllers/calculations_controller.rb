@@ -165,9 +165,6 @@ class CalculationsController < ApplicationController
 
 
   def summary
-    # $USER = User.find_by(access_token:params[:token])
-    # binding.pry
-
     default_messages=["Nice! Now let's go shopping! No really, you can treat yourself to something this week. But remember to use our calculator 😉","What are you getting me? 😁"]
     deposit_money
     message = ""
@@ -220,18 +217,12 @@ class CalculationsController < ApplicationController
   end
 
   def create
-    # binding.pry
-    if params["amount"] == ""
-      params[:amount] = 0
-    end
-
-    expense = $USER.update_attribute(:remaining_balance, (($USER.accounts.sum(:balance)) - total_bills - total_expenses - params[:amount].to_i))
-
-    # if expense.save
+    expense = $USER.expenses.new(amount:params[:amount])
+    if expense.save
       render json: expense, status: 200
-    # else
-    #   render json: expense.errors, status: 422
-    # end
+    else
+      render json: expense.errors, status: 422
+    end
   end
 
 end

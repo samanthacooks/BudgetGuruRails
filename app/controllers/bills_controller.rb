@@ -21,7 +21,6 @@ class BillsController < ApplicationController
     bills = user.bills
     upcoming_bills = []
     bills.each do |bill|
-      # binding.pry
       if today > convert_number_to_date(bill.due_date)
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
