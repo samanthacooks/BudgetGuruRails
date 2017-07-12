@@ -181,7 +181,7 @@ class CalculationsController < ApplicationController
     end
 
     summary = {
-      remaining_balance: $USER.remaining_balance,
+      remaining_balance: remaining_balance_after_charge_account,
       positive: user_status,
       message: message,
       total_income: total_income,
@@ -203,7 +203,7 @@ class CalculationsController < ApplicationController
   def calculate
     user_input = params[:num] =~ /\A\d+\z/ ? true : false
     if user_input
-        bool = ((remaining_balance_after_charge_account + total_income_by("weekly")) - (bills_upcoming_total + params[:num].to_i))> 0
+        bool = ((remaining_balance_after_charge_account) - (bills_upcoming_total + params[:num].to_i)) > 1000
       spend = {
         can_spend: bool
       }
