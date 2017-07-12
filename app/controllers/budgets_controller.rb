@@ -38,6 +38,7 @@ class BudgetsController < ApplicationController
     end
 
     def destroy
+      binding.pry
       budget = Budget.find_by(id:params[:id])
       if budget.destroy
         render json: budget, status: 200

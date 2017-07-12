@@ -85,7 +85,7 @@ class CalculationsController < ApplicationController
   def remaining_balance
     total_account_balance = $USER.accounts.sum(:balance)
     $USER.update_attribute(:remaining_balance, (total_account_balance - total_bills - total_expenses))
-    $USER.remaining_balance
+    $USER.remaining_balance + $USER.accounts.sum(:balance)
   end
 
   def total_income_by(schedule)
@@ -176,7 +176,7 @@ class CalculationsController < ApplicationController
     end
 
     summary = {
-      remaining_balance: remaining_balance_after_charge_account,
+      remaining_balance: $USER.remaining_balance,
       positive: user_status,
       message: message,
       total_income: total_income,
@@ -188,23 +188,26 @@ class CalculationsController < ApplicationController
       bills_upcoming: bills_upcoming_total,
       can_spend: can_spend?,
       weekly:total_income_by("weekly"),
-      bills_upcoming_x: bills_upcoming
+      bills_upcoming_x: bills_upcoming,
+      expenses: $USER.expenses
     }
 
     render json: summary
   end
 
   def create
-    remaining_balance_after_charge_account = (remaining_balance_after_charge_account - params["amount"].to_i)
-    expense = $USER.expenses.new(
-    amount:params["amount"].to_i,
-    user_id: $USER.id
-    )
-    if expense.save
-      render json: expense, status: 200
-    else
-      render json: expense.errors, status: 422
+    # binding.pry
+    if params["amount"] == ""
+      params[:amount] = 0
     end
+
+    expense = $USER.update_attribute(:remaining_balance, (($USER.accounts.sum(:balance)) - total_bills - total_expenses - params[:amount].to_i))
+
+    # if expense.save
+      render json: expense, status: 200
+    # else
+    #   render json: expense.errors, status: 422
+    # end
   end
 
 end

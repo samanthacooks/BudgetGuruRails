@@ -17,14 +17,13 @@ class GoalsController < ApplicationController
 
   def create
     user = User.find_by(access_token:params[:token])
-    goal = user.goals.new(
-      goal_name: params["goal_name"],
-      amount_saved: params["amount_saved"],
-      timeframe: params["timeframe"],
-      achieved: params["achieved"],
-      total: params["total"]
+    goal = Goal.new(
+      goal_name: params[:goal_name],
+      amount_saved: params[:amount_saved],
+      timeframe: params[:time_frame],
+      total: params[:total],
+      budget_id: params[:id]
     )
-
     if goal.save
       render json: goal, status: 200
     else
@@ -33,6 +32,14 @@ class GoalsController < ApplicationController
   end
 
   def update
+    goal = Goal.find_by(id:params[:id]).update_attributes(
+      goal_name: params[:goal_name],
+      amount_saved: params[:amount_saved],
+      timeframe: params[:time_frame],
+      total: params[:total],
+      budget_id: params[:budget_id]
+    )
+    render json: goal, status: 200
   end
 
   def destroy
@@ -43,6 +50,6 @@ class GoalsController < ApplicationController
   private
 
   def goal_params
-    params.require(:goals).permit(:goal_name,:amount_saved,:timeframe,:achieved,:total,:budget_id)
+    params.require(:goals).permit(:amount_saved,:timeframe,:total,:budget_id)
   end
 end

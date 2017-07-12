@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get '/incomes/:token' => 'incomes#index'
   post '/incomes/:token' => 'incomes#create'
+  post '/incomes/update/:token' => 'incomes#update'
   delete '/incomes' => 'incomes#destroy'
 
 
@@ -24,16 +25,16 @@ Rails.application.routes.draw do
   delete '/budgets' => 'budgets#destroy'
 
   get '/accounts' => 'accounts#index'
-  post '/accounts/new' => 'accounts#create'
-  post '/accounts/update' => 'accounts#update'
-  delete '/accounts/delete' => 'accounts#destroy'
+  post '/accounts/new/:token' => 'accounts#create'
+  post '/accounts/update/:token' => 'accounts#update'
+  delete '/accounts/delete/:token' => 'accounts#destroy'
 
   resources :accounts do
     resources :goals, only: [:new, :create]
   end
 
   get '/goals/:token' => 'goals#index'
-  post '/goals/new/:token' => 'goals#create'
+  post '/goals/new' => 'goals#create'
   post '/goals/update' => 'goals#update'
   delete '/goals' => 'goals#destroy'
 

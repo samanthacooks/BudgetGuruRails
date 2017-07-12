@@ -20,14 +20,14 @@ class BillsController < ApplicationController
     today = Date.today
     bills = user.bills
     upcoming_bills = []
-    due_today = []
     bills.each do |bill|
+      # binding.pry
       if today > convert_number_to_date(bill.due_date)
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
       elsif today == convert_number_to_date(bill.due_date)
         bill.update_attribute(:status, "Due today")
-        due_today << bill
+        upcoming_bills << bill
       end
       if bill.due_date > today.day
         if today < convert_number_to_date(bill.due_date) && (bill.due_date - today.day) <= 14
@@ -48,7 +48,7 @@ class BillsController < ApplicationController
     @bill = user.bills.new(
     bill_name:params["bill_name"],
     amount: params["amount"],
-    due_date: params["due_date"],
+    due_date: Date.rfc3339(params["due_date"]).day,
     status: params["status"],
     )
     if @bill.save
