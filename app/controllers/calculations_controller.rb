@@ -203,7 +203,7 @@ class CalculationsController < ApplicationController
   def calculate
     user_input = params[:num] =~ /\A\d+\z/ ? true : false
     if user_input
-        bool = ((remaining_balance_after_charge_account) - (bills_upcoming_total + params[:num].to_i)) > 1000
+        bool = ((remaining_balance_after_charge_account) - (bills_upcoming_total + params[:num].to_i)) > $USER.balance_floor
       spend = {
         can_spend: bool
       }
