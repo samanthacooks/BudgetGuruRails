@@ -17,6 +17,7 @@ class BudgetsController < ApplicationController
 
 
     def create
+      binding.pry
       @budget = $USER.budgets.new(
         budget_name: params["budget_name"],
         monthly_spend: params["monthly_spend"]

@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     resources :goals, only: [:new, :create]
   end
 
+  get '/calculate/:num' => 'calculations#calculate'
+
   get '/goals/:token' => 'goals#index'
   post '/goals/new' => 'goals#create'
   post '/goals/update' => 'goals#update'

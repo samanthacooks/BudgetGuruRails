@@ -18,14 +18,22 @@ class CalculationsController < ApplicationController
     today = Date.today
     bills = $USER.bills
     upcoming_bills = []
-
     bills.each do |bill|
       if today > convert_number_to_date(bill.due_date)
         bill.update_attribute(:status, "past due")
         upcoming_bills << bill
-      end
-      if today < convert_number_to_date(bill.due_date) && bill.due_date - today.day <= 7
+      elsif today == convert_number_to_date(bill.due_date)
+        bill.update_attribute(:status, "Due today")
         upcoming_bills << bill
+      end
+      if bill.due_date > today.day
+        if today < convert_number_to_date(bill.due_date) && (bill.due_date - today.day) <= 14
+          upcoming_bills << bill
+        end
+      elsif bill.due_date < today.day
+        if today < convert_number_to_date(bill.due_date) && (today.day - bill.due_date) <= 14
+          upcoming_bills << bill
+        end
       end
     end
     upcoming_bills
@@ -63,7 +71,7 @@ class CalculationsController < ApplicationController
   end
 
   def current_week
-    Date.today.strftime("%U").to_i + 31
+    Date.today.strftime("%U").to_i
   end
 
   def total_income
@@ -193,6 +201,18 @@ class CalculationsController < ApplicationController
     }
 
     render json: summary
+  end
+
+  def calculate
+    user_input = params[:num].to_i
+    if user_input.is_a? Integer
+        bool = ((remaining_balance_after_charge_account + total_income_by("weekly")) - (bills_upcoming_total + user_input))> 0
+    end
+
+    status = {
+      can_spend: bool
+    }
+    render json: status
   end
 
   def create
