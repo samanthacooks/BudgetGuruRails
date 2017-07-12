@@ -217,7 +217,7 @@ class CalculationsController < ApplicationController
   end
 
   def create
-    expense = $USER.expenses.new(amount:params[:amount])
+    expense = $USER.expenses.new(amount:params[:amount].to_i)
     if expense.save
       render json: expense, status: 200
     else
