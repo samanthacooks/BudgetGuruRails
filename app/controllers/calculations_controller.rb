@@ -204,15 +204,19 @@ class CalculationsController < ApplicationController
   end
 
   def calculate
-    user_input = params[:num].to_i
-    if user_input.is_a? Integer
-        bool = ((remaining_balance_after_charge_account + total_income_by("weekly")) - (bills_upcoming_total + user_input))> 0
+    user_input = params[:num] =~ /\A\d+\z/ ? true : false
+    if user_input
+        bool = ((remaining_balance_after_charge_account + total_income_by("weekly")) - (bills_upcoming_total + params[:num].to_i))> 0
+      spend = {
+        can_spend: bool
+      }
+      render json: spend, status: 200
+    else
+      err = {
+        error: "Field is not a number"
+      }
+      render json: err, status:422
     end
-
-    status = {
-      can_spend: bool
-    }
-    render json: status
   end
 
   def create
