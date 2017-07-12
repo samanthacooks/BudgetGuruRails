@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
       if @user.save
-        RegistrationMailer.welcome_email(@user).deliver!
+        # RegistrationMailer.welcome_email(@user).deliver!
         render json: @user.access_token, status: 201
       else
         render json: @user.errors, status: 422
