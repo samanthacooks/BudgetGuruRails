@@ -93,7 +93,7 @@ class CalculationsController < ApplicationController
   def remaining_balance
     total_account_balance = $USER.accounts.sum(:balance)
     $USER.update_attribute(:remaining_balance, (total_account_balance - total_bills - total_expenses))
-    $USER.remaining_balance + $USER.accounts.sum(:balance)
+    $USER.remaining_balance
   end
 
   def total_income_by(schedule)
