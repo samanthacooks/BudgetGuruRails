@@ -178,10 +178,12 @@ class CalculationsController < ApplicationController
       message = "You dont have any upcoming bills within the next week but your account is below your desired minimum by $#{floor-remaining_balance}"
     elsif $USER.positive == false && remaining_balance < floor
       message = "Don't Stress..Just do something.FAST 👏🏼"
-    elsif !can_spend
-      message = "You have #{bills_upcoming_count} bills coming up within the next week totaling $#{bills_upcoming_total}. You get paid $#{total_income_by('weekly')} next week from your fixed income. You'll still be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}"
     elsif remaining_balance_after_charge_account == 0 && bills_upcoming_count == 0
       message = "Let's Budget"
+    elsif !can_spend
+      message = "You have #{bills_upcoming_count} bills coming up within the next week totaling $#{bills_upcoming_total}. You get paid $#{total_income_by('weekly')} next week from your fixed income. You'll still be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}"
+    else
+      message="BudgetGuru"
     end
 
     summary = {
