@@ -178,8 +178,8 @@ class CalculationsController < ApplicationController
       message = default_messages.sample
     elsif $USER.positive == false && remaining_balance < floor
       message = "Don't stress...Just do something..FAST👏🏼"
-    else
-      message = "Feelin' Lucky?"
+    elsif remaining_balance_after_charge_account == 0 && bills_upcoming_count == 0
+      message = "Let's Budget"
     end
 
     summary = {
