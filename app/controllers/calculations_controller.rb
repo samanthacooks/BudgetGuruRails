@@ -176,8 +176,8 @@ class CalculationsController < ApplicationController
       message =  "Uh oh..What are you going to do. You have #{bills_upcoming_count} bills coming up. You'll be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total} "
     elsif $USER.positive == true && remaining_balance > floor && can_spend?
       message = default_messages.sample
-    elsif $USER.positive == false && remaining_balance < floor && remaining_balance_after_charge_account < 0 
-      message = "Don't stress...Just do something..FAST👏🏼"
+    elsif $USER.positive == false && remaining_balance < floor && remaining_balance_after_charge_account < 0
+      message = "You have #{bills_upcoming_count} bills coming up. You'll be short $#{(remaining_balance_after_charge_account + total_income_by('weekly'))-bills_upcoming_total}. Don't stress...Just do something..FAST👏🏼."
     elsif remaining_balance_after_charge_account == 0 && bills_upcoming_count == 0
       message = "Let's Budget"
     end
